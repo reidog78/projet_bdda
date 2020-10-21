@@ -42,7 +42,6 @@ class RewriterFromCSV(object):
 			raise Exception("Error while loading the dataFile %s"%(self.dataFile))
 
 
-
 if __name__ == "__main__":
  	if len(sys.argv)  < 3:
  		print("Usage: python rewriterFromCSV.py <vocfile> <dataFile>")

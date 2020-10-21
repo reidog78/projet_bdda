@@ -352,4 +352,4 @@ if __name__ == '__main__':
     vocFile = sys.argv[1]
     #vocFile='/Users/smits/Data/Research/Prototypes/HistogramBasedLinguisticSummarization/Data/cars.voc'
     v = Vocabulary(vocFile)
-    print(v)
+    #print(v)

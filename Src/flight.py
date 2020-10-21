@@ -99,19 +99,29 @@ class Flight(object):
 		""" Rewrite the flight according to the vocabulary voc (voc is a Vocabulary)"""
 		rw=[]
 		for part in self.vocabulary.getPartitions():
+			print(part)
 			for partelt in part.getModalities():
 				val=self.getValue(part.getAttName())
 				mu = partelt.getMu(val)
 				rw.append(mu)
 		return rw
 
+	def satisfaisant(self, partitions, modalities, trigger):
+		for partId in range(len(partitions)):
+			part = self.vocabulary.getPartition(partitions[partId])
+			partelt = part.getModality(modalities[partId])
+			val = self.getValue(part.getAttName())
+			mu = partelt.getMu(val)
+			if (mu < trigger):
+				return False
+		return True
+
 if __name__ == "__main__":
 	if len(sys.argv)  < 2:
 		print("Usage: python flight.py <vocfile.csv>")
 	else:
-		if os.path.isfile(sys.argv[1]): 
+		if os.path.isfile(sys.argv[1]):
 			voc = Vocabulary(sys.argv[1])
 			line= "2008,1,3,4,1103,1955,2211,2225,WN,335,N712SW,128,150,116,-14,8,IAD,TPA,810,4,8,0,,0,NA,NA,NA,NA,NA"
 			f = Flight(line,voc)
 			print(f.rewrite())
-
