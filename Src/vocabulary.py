@@ -346,7 +346,8 @@ class Vocabulary:
         if a not in self.mappingTab.keys():
             raise Exception("Attribute %s not found in the vocabulary (mapping)"%(a))
         return self.mappingTab[a]
-
+        
+    self.nbParts = len(self.partitions.keys())
 
 if __name__ == '__main__':
     vocFile = sys.argv[1]
