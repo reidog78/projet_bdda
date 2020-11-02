@@ -52,7 +52,7 @@ class RewriterFromCSV(object):
 
                         if f.satisfaisant(conditions):
                             res.append(f)
-                            #print(f.rewrite())
+                            print(f.rewrite())
                 print(len(res))
         except:
             raise Exception("Error while loading the dataFile %s"%(self.dataFile))
@@ -68,7 +68,7 @@ if __name__ == "__main__":
                 rw = RewriterFromCSV(voc, sys.argv[2])
                 rw.readAndFilter([
                     ['Distance', 'long', 0.2],
-                    ['Origin', 'big', 0.9]
+                    ['Origin', 'main', 0.6]
                 ])
             else:
                 print("Data file %s not found"%(sys.argv[2]))

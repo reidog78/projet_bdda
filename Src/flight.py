@@ -99,7 +99,6 @@ class Flight(object):
 		""" Rewrite the flight according to the vocabulary voc (voc is a Vocabulary)"""
 		rw=[]
 		for part in self.vocabulary.getPartitions():
-			print(part)
 			for partelt in part.getModalities():
 				val=self.getValue(part.getAttName())
 				mu = partelt.getMu(val)
@@ -115,7 +114,7 @@ class Flight(object):
 			mu = partelt.getMu(val)
 			if (mu < condition[2]):
 				return False
-			return True
+		return True
 
 if __name__ == "__main__":
 	if len(sys.argv)  < 2:
