@@ -106,15 +106,16 @@ class Flight(object):
 				rw.append(mu)
 		return rw
 
-	def satisfaisant(self, partitions, modalities, trigger):
-		for partId in range(len(partitions)):
-			part = self.vocabulary.getPartition(partitions[partId])
-			partelt = part.getModality(modalities[partId])
+	def satisfaisant(self, conditions):
+
+		for condition in conditions:
+			part = self.vocabulary.getPartition(condition[0])
+			partelt = part.getModality(condition[1])
 			val = self.getValue(part.getAttName())
 			mu = partelt.getMu(val)
-			if (mu < trigger):
+			if (mu < condition[2]):
 				return False
-		return True
+			return True
 
 if __name__ == "__main__":
 	if len(sys.argv)  < 2:
