@@ -14,6 +14,47 @@ class RewriterFromCSV(object):
         self.vocabulary = voc
         self.dataFile = df
 
+    def read (self):
+        try:
+            with open(self.dataFile, 'r') as source:
+                res = []
+                for line in source:
+                    line = line.strip()
+                    if line !=  and line[0] != "#":
+                        f = Flight(line, self.vocabulary)
+                        res.append(f)
+            return res
+        except:
+            raise Exception("Error while loading the dataFile %s"%(self.dataFile))
+
+    def filteredRead (self, conditions):
+        try:
+            with open(self.dataFile, 'r') as source:
+                res = []
+                for line in source:
+                    line = line.strip()
+                    if line !=  and line[0] != "#":
+                        f = Flight(line, self.vocabulary)
+                        if f.satisfaisant(conditions):
+                            res.append(f)
+            return res
+        except:
+            raise Exception("Error while loading the dataFile %s"%(self.dataFile))
+
+    def rewrite (self, data):
+        res = []
+        for f in data:
+            res.append(f.rewrite())
+        return res
+
+    def avgVector (self, rewrData):
+        vect = rewrData[0]
+
+        for i in range(1, len(rewrData)):
+            for x in range(len(vect)):
+                vect[x] = ((vect[x] * i) + rewrData[i][x]) / (i+1)
+
+        return vect
 
     def readAndRewrite(self):
         try:
