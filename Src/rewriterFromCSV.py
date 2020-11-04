@@ -14,6 +14,9 @@ class RewriterFromCSV(object):
         self.vocabulary = voc
         self.dataFile = df
 
+    # Loads data from defined file name
+    # Returns an Array of Flights representing all data
+
     def read (self):
         try:
             with open(self.dataFile, 'r') as source:
@@ -26,6 +29,8 @@ class RewriterFromCSV(object):
             return res
         except:
             raise Exception("Error while loading the dataFile %s"%(self.dataFile))
+
+
 
     def filteredRead (self, conditions):
         try:
