@@ -58,6 +58,7 @@ class RewriterFromCSV(object):
             for i in range(len(res[0].rewrite())):
                 avgVector.append(sum([f.rewrite()[i] for f in res])/len(res))
             print(avgVector)
+            return res
         except:
             raise Exception("Error while loading the dataFile %s"%(self.dataFile))
 
