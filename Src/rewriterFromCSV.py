@@ -23,7 +23,7 @@ class RewriterFromCSV(object):
                 res = []
                 for line in source:
                     line = line.strip()
-                    if line !=  and line[0] != "#":
+                    if line != "" and line[0] != "#":
                         f = Flight(line, self.vocabulary)
                         res.append(f)
             return res
@@ -38,7 +38,7 @@ class RewriterFromCSV(object):
                 res = []
                 for line in source:
                     line = line.strip()
-                    if line !=  and line[0] != "#":
+                    if line != "" and line[0] != "#":
                         f = Flight(line, self.vocabulary)
                         if f.satisfaisant(conditions):
                             res.append(f)
@@ -83,7 +83,7 @@ class RewriterFromCSV(object):
 
                         #print(rewr)
                 print('Vecteur moyen')
-                print(avgVector)
+                return(avgVector)
         except:
             raise Exception("Error while loading the dataFile %s"%(self.dataFile))
 
@@ -104,20 +104,22 @@ class RewriterFromCSV(object):
             for i in range(len(res[0].rewrite())):
                 avgVector.append(sum([f.rewrite()[i] for f in res])/len(res))
             print(avgVector)
-            return res
+            return avgVector
         except:
             raise Exception("Error while loading the dataFile %s"%(self.dataFile))
 
     def cover(self,v, R): # v is a condition = [attName, modName, trigg]
-        parts = self.vocabulary.getPartitions()
+        partsNames = self.vocabulary.getAttributeNames()
+        partsNames = list(partsNames)
         j = 0
         i = 0
         found = False
+        c = 0
         while not (found):
-            mod = parts[j].getModalities()[i]
-            if parts[j].getAttName() == v[0] and mod.getName() == v[1]:
+            mod = list(self.vocabulary.getPartition(partsNames[j]).getModalities())[c]
+            if partsNames[j] == v[0] and mod.getName() == v[1]:
                 found = True
-            elif c == parts[j].getNbModalities():
+            elif c == self.vocabulary.getPartition(partsNames[j]).getNbModalities()-1:
                 j += 1
                 c = 0
                 i += 1
@@ -146,10 +148,14 @@ if __name__ == "__main__":
             voc = Vocabulary(sys.argv[1])
             if os.path.isfile(sys.argv[2]):
                 rw = RewriterFromCSV(voc, sys.argv[2])
-                rw.readAndFilterAndRewrite([
-                    ['Distance', 'long', 0.2],
-                    ['Origin', 'main', 0.6]
-                ])
+                R = rw.avgVector(rw.rewrite(rw.read()))
+                condition = ['Distance', 'long', 0.2]
+                Rv = rw.avgVector(rw.rewrite(rw.filteredRead([
+                    condition])))
+                a = rw.assoc(condition,R,Rv)
+                print("R", R)
+                print("Rv", Rv)
+                print("a", a)
             else:
                 print("Data file %s not found"%(sys.argv[2]))
         else:
