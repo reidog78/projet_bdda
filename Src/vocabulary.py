@@ -317,6 +317,7 @@ class Vocabulary:
                     else:
                         raise Exception("%s: bad format line %s"%(filename, line))
         self.attributeNames = self.partitions.keys()
+        self.nbParts = len(self.partitions.keys())
 
     def getFields(self):
         return self.fields
@@ -347,7 +348,7 @@ class Vocabulary:
             raise Exception("Attribute %s not found in the vocabulary (mapping)"%(a))
         return self.mappingTab[a]
         
-    self.nbParts = len(self.partitions.keys())
+
 
 if __name__ == '__main__':
     vocFile = sys.argv[1]

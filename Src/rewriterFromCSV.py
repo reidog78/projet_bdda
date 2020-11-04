@@ -41,8 +41,9 @@ class RewriterFromCSV(object):
         except:
             raise Exception("Error while loading the dataFile %s"%(self.dataFile))
 
-    def readAndFilter(self, conditions) :
+    def readAndFilterAndRewrite(self, conditions) :
         res = []
+        avgVector = []
         try:
             with open(self.dataFile, 'r') as source:
                 for line in source:
@@ -54,8 +55,40 @@ class RewriterFromCSV(object):
                             res.append(f)
                             print(f.rewrite())
                 print(len(res))
+            for i in range(len(res[0].rewrite())):
+                avgVector.append(sum([f.rewrite()[i] for f in res])/len(res))
+            print(avgVector)
         except:
             raise Exception("Error while loading the dataFile %s"%(self.dataFile))
+
+    def cover(self,v, R): # v is a condition = [attName, modName, trigg]
+        parts = self.vocabulary.getPartitions()
+        j = 0
+        i = 0
+        found = False
+        while not (found):
+            mod = parts[j].getModalities()[i]
+            if parts[j].getAttName() == v[0] and mod.getName() == v[1]:
+                found = True
+            elif c == parts[j].getNbModalities():
+                j += 1
+                c = 0
+                i += 1
+            else:
+                c += 1
+                i += 1
+        return R[i]
+
+    def dep(self,v2,R,Rv):
+        return (self.cover(v2,Rv)/self.cover(v2,R))
+
+    def assoc(self,v2,R,Rv):
+        d = self.dep(v2,R,Rv)
+        if d <= 1:
+            a = 0
+        else:
+            a = 1 - (1/d)
+        return a
 
 
 if __name__ == "__main__":
@@ -66,7 +99,7 @@ if __name__ == "__main__":
             voc = Vocabulary(sys.argv[1])
             if os.path.isfile(sys.argv[2]):
                 rw = RewriterFromCSV(voc, sys.argv[2])
-                rw.readAndFilter([
+                rw.readAndFilterAndRewrite([
                     ['Distance', 'long', 0.2],
                     ['Origin', 'main', 0.6]
                 ])
