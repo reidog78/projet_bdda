@@ -12,20 +12,23 @@ if __name__ == "__main__": # Usage: python correlas_avgFilteredRead.py <attName1
         c[2] = float(c[2])
     voc = Vocabulary(vocFile)
     rw = RewriterFromCSV(voc, dataFile)
-    res = rw.rewrite(rw.filteredRead(conditions))
-    avg = rw.avgVector(res)
-    sV = rw.schemasVoc()
-    partitions = sV[0]
-    modalities = sV[1]
-    entetes = ["attrName","modName","deg"]
-    f = open('avgFilteredRead.csv', 'w')
+    Rv = rw.avgVector(rw.rewrite(rw.filteredRead(conditions)))
+    R = rw.avgVector(rw.rewrite(rw.read()))
+    sVoc = rw.schemasVoc()
+    partitions = sVoc[0]
+    modalities = sVoc[1]
+    entetes = ["attrName","modName","deg","correl"]
+    f = open('correls_avgFilteredRead.csv', 'w')
     ligneEntete = ",".join(entetes) + "\n"
     f.write(ligneEntete)
-    for i in range(len(avg)):
+    for i in range(len(Rv)):
             attrName = partitions[i]
             modName = modalities[i]
-            deg = str(avg[i])
-            ligne = ",".join([attrName, modName, deg]) + "\n"
+            deg = str(Rv[i])
+            correl = str(rw.assoc([attrName,modName,Rv[i]], R, Rv))
+            ligne = ",".join([attrName, modName, deg, correl]) + "\n"
             f.write(ligne)
 
     f.close()
+
+

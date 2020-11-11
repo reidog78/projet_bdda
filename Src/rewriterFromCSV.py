@@ -108,30 +108,27 @@ class RewriterFromCSV(object):
         except:
             raise Exception("Error while loading the dataFile %s"%(self.dataFile))
 
-    def cover(self,v, R): # v is a condition = [attName, modName, trigg]
-        partsNames = self.vocabulary.getAttributeNames()
-        partsNames = list(partsNames)
-        j = 0
-        i = 0
-        found = False
-        c = 0
-        while not (found):
-            mod = list(self.vocabulary.getPartition(partsNames[j]).getModalities())[c]
-            if partsNames[j] == v[0] and mod.getName() == v[1]:
-                found = True
-            elif c == self.vocabulary.getPartition(partsNames[j]).getNbModalities()-1:
-                j += 1
-                c = 0
-                i += 1
-            else:
-                c += 1
-                i += 1
+    def cover(self,v2, R): # v2 pattern is [attName, modName, satisfying_value]
+
+        sVoc = self.schemasVoc()
+        partitions = sVoc[0]
+        modalities = sVoc[1]
+        i_part = partitions.index(v2[0])
+        i = i_part
+        while modalities[i] != v2[1]:
+            i += 1
         return R[i]
 
     def dep(self,v2,R,Rv):
-        return (self.cover(v2,Rv)/self.cover(v2,R))
+        cRv = self.cover(v2,Rv)
+        cR = self.cover(v2,R)
+        if cR == 0:
+            d = 0
+        else :
+            d = cRv/cR
+        return d
 
-    def assoc(self,v2,R,Rv):
+    def assoc(self,v2,R,Rv): # correlation entre v2 (un terme de Rv) et le terme v de Rv utilisé pour le filtrage
         d = self.dep(v2,R,Rv)
         if d <= 1:
             a = 0
@@ -162,10 +159,10 @@ if __name__ == "__main__":
                 condition = ['Distance', 'long', 0.2]
                 Rv = rw.avgVector(rw.rewrite(rw.filteredRead([
                     condition])))
-                a = rw.assoc(condition,R,Rv)
-                print("R", R)
-                print("Rv", Rv)
-                print("a", a)
+                a = rw.assoc(["DayOfWeek","beginning",Rv[0]],R,Rv)
+                print("R = ", R)
+                print("Rv = ", Rv)
+                print("a = ", a)
             else:
                 print("Data file %s not found"%(sys.argv[2]))
         else:
