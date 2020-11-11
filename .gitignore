@@ -1,3 +1,5 @@
 Src/__pycache__/*
 Data/*
 node_modules/*
+*/avgRead.csv
+*/*.csv
