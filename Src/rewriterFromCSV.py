@@ -32,7 +32,7 @@ class RewriterFromCSV(object):
 
 
 
-    def filteredRead (self, conditions):
+    def filteredRead (self, conditions): # conditions comme liste de conditions chacune de la forme [attName, modName, trigg]
         try:
             with open(self.dataFile, 'r') as source:
                 res = []
@@ -138,6 +138,17 @@ class RewriterFromCSV(object):
         else:
             a = 1 - (1/d)
         return a
+
+    def schemasVoc(self): # retourne 2 listes (partitions et modalities) de longueur = nombre de modalities = longueur vecteur reecriture
+        voc = self.vocabulary
+        partitions = []
+        parts = list(voc.getPartitions())
+        modalities = parts[0].getModNames()
+        partitions = [parts[0].getAttName()] * parts[0].getNbModalities()
+        for i in range(1,len(parts)):
+            modalities += parts[i].getModNames()
+            partitions += [parts[i].getAttName()] * parts[i].getNbModalities()
+        return partitions,modalities
 
 
 if __name__ == "__main__":
