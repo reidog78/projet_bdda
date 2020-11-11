@@ -25,7 +25,7 @@ if __name__ == "__main__": # Usage: python correlas_avgFilteredRead.py <attName1
             attrName = partitions[i]
             modName = modalities[i]
             deg = str(Rv[i])
-            correl = str(rw.assoc([attrName,modName,Rv[i]], R, Rv))
+            correl = str(rw.assoc([attrName,modName], R, Rv))
             ligne = ",".join([attrName, modName, deg, correl]) + "\n"
             f.write(ligne)
 

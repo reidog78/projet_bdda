@@ -108,7 +108,7 @@ class RewriterFromCSV(object):
         except:
             raise Exception("Error while loading the dataFile %s"%(self.dataFile))
 
-    def cover(self,v2, R): # v2 pattern is [attName, modName, satisfying_value]
+    def cover(self,v2, R): # v2 pattern is [attName, modName]
 
         sVoc = self.schemasVoc()
         partitions = sVoc[0]
@@ -159,7 +159,7 @@ if __name__ == "__main__":
                 condition = ['Distance', 'long', 0.2]
                 Rv = rw.avgVector(rw.rewrite(rw.filteredRead([
                     condition])))
-                a = rw.assoc(["DayOfWeek","beginning",Rv[0]],R,Rv)
+                a = rw.assoc(["DepTime","afternoon"],R,Rv)
                 print("R = ", R)
                 print("Rv = ", Rv)
                 print("a = ", a)
