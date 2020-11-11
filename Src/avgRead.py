@@ -13,6 +13,7 @@ if __name__ == "__main__": # Usage: python avgRead.py
     res = rw.rewrite(rw.read())
     avg = rw.avgVector(res)
 
+    print(avg)
     sV = rw.schemasVoc()
     partitions = sV[0]
     modalities = sV[1]

@@ -141,7 +141,6 @@ class RewriterFromCSV(object):
 
     def schemasVoc(self): # retourne 2 listes (partitions et modalities) de longueur = nombre de modalities = longueur vecteur reecriture
         voc = self.vocabulary
-        partitions = []
         parts = list(voc.getPartitions())
         modalities = parts[0].getModNames()
         partitions = [parts[0].getAttName()] * parts[0].getNbModalities()

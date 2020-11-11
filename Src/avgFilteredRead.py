@@ -7,14 +7,13 @@ dataFile = "./../Data/extrait_2008.csv"
 
 
 if __name__ == "__main__": # Usage: python avgFilteredRead.py <attName1,modName1,trigg1> <attName2,modName2,trigg2> ...
-    conditions = [sys.argv[i].split(",") for i in range(1,int(len(sys.argv)-1))]
+    conditions = [sys.argv[i].split(",") for i in range(1,int(len(sys.argv)))]
     for c in conditions:
-        c[2] = float(c)
+        c[2] = float(c[2])
     voc = Vocabulary(vocFile)
     rw = RewriterFromCSV(voc, dataFile)
     res = rw.rewrite(rw.filteredRead(conditions))
     avg = rw.avgVector(res)
-
     sV = rw.schemasVoc()
     partitions = sV[0]
     modalities = sV[1]
